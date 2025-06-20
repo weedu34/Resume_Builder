@@ -203,10 +203,9 @@ If you encounter issues:
 ## 📊 Screenshots
 
 ### Main Interface
-![Resume Builder GUI](screenshots/main_interface.png)
+![Resume Builder GUI](GUI.png)
 
-### Generated Resume Sample
-![Sample Resume Output](screenshots/sample_resume.png)
+
 
 ---
 
