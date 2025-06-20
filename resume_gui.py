@@ -38,92 +38,94 @@ class ResumeBuilder:
         self._setup_custom_styles()
     
     def _setup_custom_styles(self):
-        """Setup custom styles matching the LaTeX resume format"""
-        # Name header style
+        """Setup custom styles with minimal spacing for one-page resume"""
+        # Name header style - MINIMAL spacing
         self.styles.add(ParagraphStyle(
             name='NameHeader',
             parent=self.styles['Heading1'],
-            fontSize=16,
-            spaceAfter=2,
+            fontSize=14,                # Reduced from 16
+            spaceAfter=1,              # Reduced from 2
             alignment=TA_CENTER,
             textColor=colors.black,
-            fontName='Helvetica-Bold'
+            fontName='Times-Bold'
         ))
         
-        # Contact info style
+        # Contact info style - MINIMAL spacing
         self.styles.add(ParagraphStyle(
             name='ContactInfo',
             parent=self.styles['Normal'],
             fontSize=9,
             alignment=TA_CENTER,
-            spaceAfter=8,
-            fontName='Helvetica'
+            spaceAfter=4,              # Reduced from 8
+            fontName='Times-Roman'
         ))
         
-        # Section header style (like "Berufsprofil", "Berufliche Erfahrung")
+        # Section header style - MINIMAL spacing
         self.styles.add(ParagraphStyle(
             name='SectionHeader',
             parent=self.styles['Heading2'],
-            fontSize=11,
-            spaceAfter=3,
-            spaceBefore=8,
+            fontSize=10,               # Reduced from 11
+            spaceAfter=1,              # Reduced from 3
+            spaceBefore=4,             # Reduced from 8
             alignment=TA_LEFT,
             textColor=colors.black,
-            fontName='Helvetica-Bold'
+            fontName='Times-Bold'
         ))
         
-        # Job title and company style
+        # Job title and company style - MINIMAL spacing
         self.styles.add(ParagraphStyle(
             name='JobTitle',
             parent=self.styles['Normal'],
-            fontSize=10,
-            spaceAfter=2,
-            spaceBefore=4,
+            fontSize=9,                # Reduced from 10
+            spaceAfter=1,              # Reduced from 2
+            spaceBefore=2,             # Reduced from 4
             alignment=TA_LEFT,
             textColor=colors.black,
-            fontName='Helvetica-Bold'
+            fontName='Times-Bold'
         ))
         
-        # Bullet point style
+        # Bullet point style - MINIMAL spacing
         self.styles.add(ParagraphStyle(
             name='BulletPoint',
             parent=self.styles['Normal'],
-            fontSize=9,
-            spaceAfter=1,
-            leftIndent=15,
-            bulletIndent=8,
+            fontSize=8,                # Reduced from 9
+            spaceAfter=0,              # Reduced from 1
+            leftIndent=12,             # Reduced from 15
+            bulletIndent=6,            # Reduced from 8
             alignment=TA_JUSTIFY,
-            fontName='Helvetica'
+            fontName='Times-Roman'
         ))
         
-        # Skills category style
+        # Skills category style - MINIMAL spacing
         self.styles.add(ParagraphStyle(
             name='SkillCategory',
             parent=self.styles['Normal'],
-            fontSize=9,
-            spaceAfter=1,
+            fontSize=8,                # Reduced from 9
+            spaceAfter=0,              # Reduced from 1
             alignment=TA_LEFT,
-            fontName='Helvetica'
+            fontName='Times-Roman'
         ))
         
-        # Education/Project title style
+        # Education/Project title style - MINIMAL spacing
         self.styles.add(ParagraphStyle(
             name='SubsectionTitle',
             parent=self.styles['Normal'],
-            fontSize=10,
-            spaceAfter=2,
-            spaceBefore=3,
+            fontSize=9,                # Reduced from 10
+            spaceAfter=1,              # Reduced from 2
+            spaceBefore=1,             # Reduced from 3
             alignment=TA_LEFT,
-            fontName='Helvetica-Bold'
+            fontName='Times-Bold'
         ))
         
-        # Date/location style
+        # Normal style override for general text - MINIMAL spacing
         self.styles.add(ParagraphStyle(
-            name='DateLocation',
+            name='CompactNormal',
             parent=self.styles['Normal'],
-            fontSize=9,
-            alignment=TA_RIGHT,
-            fontName='Helvetica'
+            fontSize=8,                # Reduced font size
+            spaceAfter=0,              # No space after
+            spaceBefore=0,             # No space before
+            alignment=TA_JUSTIFY,
+            fontName='Times-Roman'
         ))
 
     def add_personal_info(self, name, location, email, phone, linkedin=None, github=None):
@@ -196,65 +198,78 @@ class ResumeBuilder:
         self.resume_data['certifications'].append(cert)
     
     def _create_header(self, story):
-        """Create the header section with name and contact info"""
         # Name
         name_para = Paragraph(self.resume_data['personal_info']['name'], self.styles['NameHeader'])
         story.append(name_para)
         
-        # Contact information
+        # Contact with manual hyperlinks
         contact_parts = []
         info = self.resume_data['personal_info']
         
-        if info['location']:
+        if info.get('location'):
             contact_parts.append(info['location'])
-        if info['email']:
-            contact_parts.append(info['email'])
-        if info['phone']:
-            contact_parts.append(info['phone'])
-        if info['linkedin']:
-            contact_parts.append(f"LinkedIn: {info['linkedin']}")
-        if info['github']:
-            contact_parts.append(info['github'])
+        if info.get('email'):
+            contact_parts.append(f'<a href="mailto:{info["email"]}" color="black">{info["email"]}</a>')
+        if info.get('phone'):
+            contact_parts.append(f'<a href="tel:{info["phone"]}" color="black">{info["phone"]}</a>')
+        if info.get('linkedin_display') and info.get('linkedin_url'):
+            contact_parts.append(f'<a href="{info["linkedin_url"]}" color="black">{info["linkedin_display"]}</a>')
+        if info.get('github_display') and info.get('github_url'):
+            contact_parts.append(f'<a href="{info["github_url"]}" color="black">{info["github_display"]}</a>')
         
         contact_text = ' | '.join(contact_parts)
         contact_para = Paragraph(contact_text, self.styles['ContactInfo'])
         story.append(contact_para)
+
     
+    # Updated section methods with minimal spacing
     def _create_section_with_line(self, story, title):
-        """Create a section header with underline (like in LaTeX version)"""
-        # Create a table with the title and a line
-        section_para = Paragraph(f"<b>{title}</b>", self.styles['SectionHeader'])
-        story.append(section_para)
+        """Create a section header with underline - NO spacing between title and line"""
         
-        # Add a horizontal line
-        line_table = Table([[''], ['']], colWidths=[7.5*inch], rowHeights=[1, 1])
-        line_table.setStyle(TableStyle([
-            ('LINEBELOW', (0, 0), (-1, 0), 1, colors.black),
-            ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+        # Method 1: Use a single table with text and line (RECOMMENDED)
+        section_data = [[title], ['']]
+        section_table = Table(section_data, colWidths=[7.5*inch], rowHeights=[12, 1])
+        section_table.setStyle(TableStyle([
+            # Title row styling
+            ('FONTNAME', (0, 0), (0, 0), 'Times-Bold'),
+            ('FONTSIZE', (0, 0), (0, 0), 10),
+            ('VALIGN', (0, 0), (0, 0), 'BOTTOM'),
+            ('LEFTPADDING', (0, 0), (0, 0), 0),
+            ('RIGHTPADDING', (0, 0), (0, 0), 0),
+            ('TOPPADDING', (0, 0), (0, 0), 0),
+            ('BOTTOMPADDING', (0, 0), (0, 0), 0),
+            
+            # Line row styling
+            ('LINEBELOW', (0, 1), (-1, 1), 1, colors.black),
+            ('VALIGN', (0, 1), (0, 1), 'TOP'),
+            ('LEFTPADDING', (0, 1), (0, 1), 0),
+            ('RIGHTPADDING', (0, 1), (0, 1), 0),
+            ('TOPPADDING', (0, 1), (0, 1), 0),
+            ('BOTTOMPADDING', (0, 1), (0, 1), 0),
         ]))
-        story.append(line_table)
-        story.append(Spacer(1, 2))
+        story.append(section_table)
+        story.append(Spacer(1, 3))  # Small space after the section header
     
     def _create_profile_section(self, story):
-        """Create profile summary section"""
+        """Create profile summary section - MINIMAL spacing"""
         if not self.resume_data['profile_summary']:
             return
             
         self._create_section_with_line(story, 'Berufsprofil')
         
-        profile_para = Paragraph(self.resume_data['profile_summary'], self.styles['Normal'])
+        profile_para = Paragraph(self.resume_data['profile_summary'], self.styles['CompactNormal'])
         story.append(profile_para)
-        story.append(Spacer(1, 6))
+        story.append(Spacer(1, 2))     # Reduced from 6
     
     def _create_experience_section(self, story):
-        """Create work experience section"""
+        """Create work experience section - MINIMAL spacing"""
         if not self.resume_data['experience']:
             return
             
         self._create_section_with_line(story, 'Berufliche Erfahrung')
         
         for exp in self.resume_data['experience']:
-            # Job title with date range in a table
+            # Job title with date range in a table - MINIMAL spacing
             job_data = [[
                 f"{exp['job_title']} | {exp['company']} | {exp['location']}",
                 f"({exp['start_date']} - {exp['end_date']})"
@@ -262,53 +277,53 @@ class ResumeBuilder:
             
             job_table = Table(job_data, colWidths=[5.5*inch, 2*inch])
             job_table.setStyle(TableStyle([
-                ('FONTSIZE', (0, 0), (-1, -1), 10),
+                ('FONTSIZE', (0, 0), (-1, -1), 9),     # Reduced from 10
                 ('VALIGN', (0, 0), (-1, -1), 'TOP'),
                 ('ALIGN', (1, 0), (1, 0), 'RIGHT'),
-                ('FONTNAME', (0, 0), (0, 0), 'Helvetica-Bold'),  # Make job title bold
+                ('FONTNAME', (0, 0), (0, 0), 'Times-Bold'),
             ]))
             story.append(job_table)
-            story.append(Spacer(1, 2))
+            # NO SPACER - removed
             
-            # Responsibilities as bullet points
+            # Responsibilities as bullet points - MINIMAL spacing
             for resp in exp['responsibilities']:
                 bullet_para = Paragraph(f"• {resp}", self.styles['BulletPoint'])
                 story.append(bullet_para)
             
-            # Technologies if provided
+            # Technologies if provided - MINIMAL spacing
             if exp['technologies']:
-                tech_para = Paragraph(f"<b>Technologien:</b> {exp['technologies']}", self.styles['Normal'])
+                tech_para = Paragraph(f"<b>Technologien:</b> {exp['technologies']}", self.styles['CompactNormal'])
                 story.append(tech_para)
             
-            story.append(Spacer(1, 4))
+            story.append(Spacer(1, 2))                 # Reduced from 4                 
     
     def _create_education_section(self, story):
-        """Create education section"""
+        """Create education section - MINIMAL spacing"""
         if not self.resume_data['education']:
             return
             
         self._create_section_with_line(story, 'AUSBILDUNG')
         
         for edu in self.resume_data['education']:
-            # Institution and degree
+            # Institution and degree - MINIMAL spacing
             edu_title = f"{edu['institution']}, {edu['location']}, {edu['degree']} in {edu['field']}"
-            edu_para = Paragraph(edu_title, self.styles['JobTitle'])  # Use JobTitle style which is bold
+            edu_para = Paragraph(edu_title, self.styles['JobTitle'])
             story.append(edu_para)
             
-            # Focus areas
+            # Focus areas - MINIMAL spacing
             if edu['focus_areas']:
                 focus_text = f"Schwerpunkt: {', '.join(edu['focus_areas'])}"
-                focus_para = Paragraph(focus_text, self.styles['Normal'])
+                focus_para = Paragraph(focus_text, self.styles['CompactNormal'])
                 story.append(focus_para)
             
-            # Date range
+            # Date range - MINIMAL spacing
             date_text = f"({edu['start_date']} – {edu['end_date']})"
-            date_para = Paragraph(date_text, self.styles['Normal'])
+            date_para = Paragraph(date_text, self.styles['CompactNormal'])
             story.append(date_para)
-            story.append(Spacer(1, 4))
+            story.append(Spacer(1, 2))             # Reduced from 4
     
     def _create_skills_section(self, story):
-        """Create technical skills section"""
+        """Create technical skills section - MINIMAL spacing"""
         skills = self.resume_data['skills']
         if not any([skills['programming'], skills['technical'], skills['software']]):
             return
@@ -330,35 +345,36 @@ class ResumeBuilder:
             soft_para = Paragraph(soft_text, self.styles['SkillCategory'])
             story.append(soft_para)
         
-        story.append(Spacer(1, 6))
+        story.append(Spacer(1, 2))                 # Reduced from 6
+
     
     def _create_projects_section(self, story):
-        """Create projects section"""
+        """Create projects section - MINIMAL spacing"""
         if not self.resume_data['projects']:
             return
             
         self._create_section_with_line(story, 'PROJEKT ARBEITEN')
         
         for project in self.resume_data['projects']:
-            # Project title
+            # Project title - MINIMAL spacing
             title_para = Paragraph(f"{project['title'].upper()} | {project['subtitle']}, {project['location']}", 
-                                 self.styles['JobTitle'])  # Use JobTitle style which is bold
+                                self.styles['JobTitle'])
             story.append(title_para)
             
-            # Date range
-            date_para = Paragraph(f"({project['date_range']})", self.styles['Normal'])
+            # Date range - MINIMAL spacing
+            date_para = Paragraph(f"({project['date_range']})", self.styles['CompactNormal'])
             story.append(date_para)
-            story.append(Spacer(1, 2))
+            # NO SPACER - removed
             
-            # Description as bullet points
+            # Description as bullet points - MINIMAL spacing
             for desc in project['description']:
                 bullet_para = Paragraph(f"• {desc}", self.styles['BulletPoint'])
                 story.append(bullet_para)
             
-            story.append(Spacer(1, 4))
+            story.append(Spacer(1, 2))             # Reduced from 4
     
     def _create_certifications_section(self, story):
-        """Create certifications section"""
+        """Create certifications section - MINIMAL spacing"""
         if not self.resume_data['certifications']:
             return
             
@@ -368,8 +384,6 @@ class ResumeBuilder:
             cert_text = f"• <b>{cert['name']}</b> - Herausgegeben von {cert['issuer']}"
             cert_para = Paragraph(cert_text, self.styles['SkillCategory'])
             story.append(cert_para)
-        
-        story.append(Spacer(1, 6))
     
     def generate_pdf(self, filename="resume.pdf"):
         """Generate the PDF resume"""
@@ -481,7 +495,7 @@ class ResumeBuilderGUI:
         ttk.Button(file_frame, text="Clear All", command=self.clear_all_data).pack(side=tk.LEFT, padx=(0, 5))
     
     def create_personal_info_section(self, parent):
-        """Create personal information section"""
+        """Create personal information section with proper hyperlink fields"""
         personal_frame = ttk.LabelFrame(parent, text="Personal Information", padding="10")
         personal_frame.pack(fill=tk.X, pady=(0, 10))
         
@@ -505,18 +519,46 @@ class ResumeBuilderGUI:
         self.phone_var = tk.StringVar()
         ttk.Entry(personal_frame, textvariable=self.phone_var, width=50).grid(row=3, column=1, columnspan=2, sticky=tk.W+tk.E, pady=2, padx=(5, 0))
         
-        # LinkedIn
-        ttk.Label(personal_frame, text="LinkedIn:").grid(row=4, column=0, sticky=tk.W, pady=2)
-        self.linkedin_var = tk.StringVar()
-        ttk.Entry(personal_frame, textvariable=self.linkedin_var, width=50).grid(row=4, column=1, columnspan=2, sticky=tk.W+tk.E, pady=2, padx=(5, 0))
+        # LinkedIn - UPDATED with separate fields
+        linkedin_frame = ttk.Frame(personal_frame)
+        linkedin_frame.grid(row=4, column=0, columnspan=3, sticky=tk.W+tk.E, pady=2)
         
-        # GitHub
-        ttk.Label(personal_frame, text="GitHub:").grid(row=5, column=0, sticky=tk.W, pady=2)
-        self.github_var = tk.StringVar()
-        ttk.Entry(personal_frame, textvariable=self.github_var, width=50).grid(row=5, column=1, columnspan=2, sticky=tk.W+tk.E, pady=2, padx=(5, 0))
+        ttk.Label(linkedin_frame, text="LinkedIn Display Name:").grid(row=0, column=0, sticky=tk.W, pady=2)
+        self.linkedin_display_var = tk.StringVar()
+        ttk.Entry(linkedin_frame, textvariable=self.linkedin_display_var, width=25).grid(row=0, column=1, sticky=tk.W+tk.E, pady=2, padx=(5, 10))
+        
+        ttk.Label(linkedin_frame, text="LinkedIn URL:").grid(row=0, column=2, sticky=tk.W, pady=2)
+        self.linkedin_url_var = tk.StringVar()
+        ttk.Entry(linkedin_frame, textvariable=self.linkedin_url_var, width=40).grid(row=0, column=3, sticky=tk.W+tk.E, pady=2, padx=(5, 0))
+        
+        # Helper text for LinkedIn
+        linkedin_help = ttk.Label(linkedin_frame, text="Example: Display='Muhammad Waleed', URL='https://linkedin.com/in/muhammad-waleed'", 
+                                font=('Arial', 8), foreground='gray')
+        linkedin_help.grid(row=1, column=0, columnspan=4, sticky=tk.W, pady=(2, 5))
+        
+        # GitHub - UPDATED with separate fields
+        github_frame = ttk.Frame(personal_frame)
+        github_frame.grid(row=5, column=0, columnspan=3, sticky=tk.W+tk.E, pady=2)
+        
+        ttk.Label(github_frame, text="GitHub Display:").grid(row=0, column=0, sticky=tk.W, pady=2)
+        self.github_display_var = tk.StringVar()
+        ttk.Entry(github_frame, textvariable=self.github_display_var, width=25).grid(row=0, column=1, sticky=tk.W+tk.E, pady=2, padx=(5, 10))
+        
+        ttk.Label(github_frame, text="GitHub URL:").grid(row=0, column=2, sticky=tk.W, pady=2)
+        self.github_url_var = tk.StringVar()
+        ttk.Entry(github_frame, textvariable=self.github_url_var, width=40).grid(row=0, column=3, sticky=tk.W+tk.E, pady=2, padx=(5, 0))
+        
+        # Helper text for GitHub
+        github_help = ttk.Label(github_frame, text="Example: Display='github.com/weedu34', URL='https://github.com/weedu34'", 
+                            font=('Arial', 8), foreground='gray')
+        github_help.grid(row=1, column=0, columnspan=4, sticky=tk.W, pady=(2, 5))
         
         # Configure column weights
         personal_frame.columnconfigure(1, weight=1)
+        linkedin_frame.columnconfigure(1, weight=1)
+        linkedin_frame.columnconfigure(3, weight=2)
+        github_frame.columnconfigure(1, weight=1)
+        github_frame.columnconfigure(3, weight=2)   
     
     def create_profile_section(self, parent):
         """Create profile summary section"""
@@ -864,15 +906,17 @@ class ResumeBuilderGUI:
         # Reset resume builder
         self.resume_builder = ResumeBuilder()
         
-        # Personal info
-        self.resume_builder.add_personal_info(
-            name=self.name_var.get(),
-            location=self.location_var.get(),
-            email=self.email_var.get(),
-            phone=self.phone_var.get(),
-            linkedin=self.linkedin_var.get(),
-            github=self.github_var.get()
-        )
+        # Personal info with manual hyperlinks
+        self.resume_builder.resume_data['personal_info'] = {
+            'name': self.name_var.get(),
+            'location': self.location_var.get(),
+            'email': self.email_var.get(),
+            'phone': self.phone_var.get(),
+            'linkedin_display': self.linkedin_display_var.get(),
+            'linkedin_url': self.linkedin_url_var.get(),
+            'github_display': self.github_display_var.get(),
+            'github_url': self.github_url_var.get()
+        }
         
         # Profile summary
         profile_text = self.profile_text.get("1.0", tk.END).strip()
@@ -1038,8 +1082,47 @@ class ResumeBuilderGUI:
         self.location_var.set(data['personal_info'].get('location', ''))
         self.email_var.set(data['personal_info'].get('email', ''))
         self.phone_var.set(data['personal_info'].get('phone', ''))
-        self.linkedin_var.set(data['personal_info'].get('linkedin', ''))
-        self.github_var.set(data['personal_info'].get('github', ''))
+        # Handle both old and new data formats
+        personal_info = data['personal_info']
+
+        # LinkedIn fields
+        if 'linkedin_display' in personal_info:
+            # New format with separate display and URL
+            self.linkedin_display_var.set(personal_info.get('linkedin_display', ''))
+            self.linkedin_url_var.set(personal_info.get('linkedin_url', ''))
+        else:
+            # Old format - convert to new format
+            linkedin_old = personal_info.get('linkedin', '')
+            if linkedin_old:
+                self.linkedin_display_var.set(f"LinkedIn: {linkedin_old}")
+                self.linkedin_url_var.set(f"https://linkedin.com/in/{linkedin_old.lower().replace(' ', '-')}")
+            else:
+                self.linkedin_display_var.set('')
+                self.linkedin_url_var.set('')
+
+        # GitHub fields
+        if 'github_display' in personal_info:
+            # New format with separate display and URL
+            self.github_display_var.set(personal_info.get('github_display', ''))
+            self.github_url_var.set(personal_info.get('github_url', ''))
+        else:
+            # Old format - convert to new format
+            github_old = personal_info.get('github', '')
+            if github_old:
+                # Check if it already contains github.com
+                if github_old.startswith('github.com/'):
+                    self.github_display_var.set(github_old)
+                    self.github_url_var.set(f"https://{github_old}")
+                elif github_old.startswith('https://'):
+                    self.github_display_var.set(github_old.replace('https://', ''))
+                    self.github_url_var.set(github_old)
+                else:
+                    # Just username
+                    self.github_display_var.set(f"github.com/{github_old}")
+                    self.github_url_var.set(f"https://github.com/{github_old}")
+            else:
+                self.github_display_var.set('')
+                self.github_url_var.set('')
         
         # Profile summary
         self.profile_text.delete("1.0", tk.END)

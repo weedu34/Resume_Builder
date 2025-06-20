@@ -1,0 +1,130 @@
+{
+  "personal_info": {
+    "name": "Muhammad Waleed",
+    "location": "Ilmenau, Germany",
+    "email": "weedu34@gmail.com",
+    "phone": "+49 176 56964658",
+    "linkedin": "Muhammad Waleed",
+    "github": "github.com/weedu34"
+  },
+  "profile_summary": "Masterabsolvent in Medientechnologie mit praktischer Erfahrung in Python-Anwendungsentwicklung und Systemintegration für technische Anwendungen. Spezialisiert auf Datenbankintegration, Schnittstellen-Entwicklung und Softwareoptimierung. Fundierte Kenntnisse in strukturierter Problemlösung, technischer Dokumentation und Mitarbeiterschulung bei IT-Systemen. Analytisches Denkvermögen und eigenständige Arbeitsweise mit ausgeprägtem Teamgeist durch erfolgreiche Projektarbeit.",
+  "experience": [
+    {
+      "job_title": "Master-Arbeit",
+      "company": "Carl Zeiss Jena GmbH",
+      "location": "Germany",
+      "start_date": "April 2024",
+      "end_date": "Okt 2024",
+      "responsibilities": [
+        "Computer Vision-Pipeline-Entwicklung: Entwickelte Echtzeit-Bildverarbeitungssystem für Multispektral-Kamerasysteme mit OpenCV-basierten Algorithmen für Objekterkennung und -verfolgungs",
+        "Sensorfusion & Kalibrierung: Implementierte Multi-Sensor-Datenintegration (Kameras, Akzelerometer) für präzise 3D-Objektlokalisierung und Bewegungserkennung",
+        "Echtzeit-Objekterkennung: Optimierte Computer Vision-Algorithmen für <50ms Latenz bei 30fps Bildverarbeitung für zeitkritische Anwendungen"
+      ],
+      "technologies": "Python, OpenCV, NumPy, Multi-Threading, Sensorfusion, Kamerakalibrierung"
+    },
+    {
+      "job_title": "Studentische Hilfskraft",
+      "company": "Technische Universität Ilmenau",
+      "location": "Germany",
+      "start_date": "Mai 2022",
+      "end_date": "Sept 2023",
+      "responsibilities": [
+        "Objekterkennung & Klassifizierung: Entwickelte OpenCV-basierte Algorithmen für automatisierte Objekterkennung in beweglichen Umgebungen und Materialdefektklassifizierung",
+        "Machine Learning-Integration: Entwickelte und trainierte ML-Modelle für Echtzeit-Objektklassifizierung mit 84% Erkennungsgenauigkei",
+        "Prozessunterstützung: Unterstützte Forschungsabteilungen bei der Optimierung von Arbeitsabläufen durch maßgeschneiderte Software-Lösungen"
+      ],
+      "technologies": ""
+    }
+  ],
+  "education": [
+    {
+      "institution": "Technische Universität Ilmenau",
+      "location": "Germany",
+      "degree": "Master",
+      "field": "Medientechnologie",
+      "start_date": "April 2021",
+      "end_date": "Feb 2025",
+      "focus_areas": [
+        "Computer Vision",
+        "Signal Processing",
+        "Bildverarbeitung",
+        "Sensor Technology"
+      ]
+    },
+    {
+      "institution": "University of Engineering and Technology",
+      "location": "Taxila, Pakistan",
+      "degree": "Bachelor",
+      "field": "Elektrotechnik",
+      "start_date": "Nov 2012",
+      "end_date": "Juli 2016",
+      "focus_areas": [
+        "Embedded Systems",
+        "Automatisierungstechnik",
+        "Control Systems"
+      ]
+    }
+  ],
+  "skills": {
+    "programming": [
+      "Python",
+      "SQL",
+      "HTML/CSS",
+      "C++",
+      "API-Integration",
+      "Hardware-Software-Schnittstellen",
+      "SQLite",
+      "PostgreSQL - Database Design"
+    ],
+    "technical": [
+      "Multi-Sensor-Fusion: Kamera-IMU-Integration",
+      "Sensordatensynchronisation",
+      "Serial Communication",
+      "USB/Bluetooth APIs",
+      "Embedded-Controller-Integration",
+      "Kamerakalibrierung",
+      "Multi-Kamera-Setups",
+      "Bildqualitätsoptimierung"
+    ],
+    "software": [
+      "Modulare, wiederverwendbare Komponenten",
+      "User Interface Design",
+      "User Experience Optimization"
+    ]
+  },
+  "projects": [
+    {
+      "title": "IMPLEMENTATION OF A DATA ACQUISITION AND ANALYSIS SOFTWARE FOR HANDHELD MULTISPECTRAL CAMERA SYSTEM",
+      "subtitle": "Masterarbeit, Carl Zeiss Jena GmbH",
+      "location": "Deutschland",
+      "date_range": "April 2024 – Okt 2024",
+      "description": [
+        "Vollständige Software-Stack-Entwicklung von Anforderungsanalyse bis Deployment für präzise optische Systeme",
+        "Integration verschiedener Hardware-Komponenten (Kameras, Sensoren, Embedded-Controller) mit Python Interfaces"
+      ]
+    },
+    {
+      "title": "VIDEO BASED HUMAN ACTION RECOGNITION USING RESERVOIR COMPUTING",
+      "subtitle": "Medienprojekt, Technische Universität Ilmenau",
+      "location": "Deutschland",
+      "date_range": "Dez 2022 – Mai 2023",
+      "description": [
+        "Entwicklung und Training von ML-Modellen für Echtzeit-Anwendungen mit Python und numerischen Optimierungsalgorithmen"
+      ]
+    }
+  ],
+  "certifications": [
+    {
+      "name": "Python for Data Science, AI & Development",
+      "issuer": "Coursera"
+    },
+    {
+      "name": "Machine Learning- From Basics to Advanced",
+      "issuer": "Udemy"
+    },
+    {
+      "name": "Python Programming - From Basic to Advanced Level",
+      "issuer": "Udemy"
+    }
+  ]
+}
